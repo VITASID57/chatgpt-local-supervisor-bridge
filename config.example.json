@@ -1,0 +1,19 @@
+{
+  "serverName": "chatgpt-local-supervisor",
+  "maxReadBytes": 1048576,
+  "maxWriteBytes": 2097152,
+  "maxSearchFiles": 4000,
+  "maxToolOutputChars": 120000,
+  "denyRoots": [
+    "C:\\Users\\YOUR_NAME\\Private"
+  ],
+  "browserExecutable": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+  "projects": [
+    {
+      "id": "example",
+      "label": "My Project",
+      "root": "C:\\Users\\YOUR_NAME\\Projects\\my-project",
+      "git": true
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "chatgpt-local-supervisor-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Windows-first, allowlisted MCP bridge from ChatGPT web to local project files through OpenAI Secure MCP Tunnel.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "check:syntax": "node --check server.mjs && node --check lib/common.mjs && node --check lib/policy.mjs && node --check lib/file-tools.mjs && node --check lib/git-tools.mjs && node --check lib/process-tools.mjs",
+    "test": "node --test test/policy.test.mjs",
+    "smoke": "node scripts/smoke-test.mjs",
+    "check": "npm run check:syntax && npm test && npm run smoke"
+  }
+}

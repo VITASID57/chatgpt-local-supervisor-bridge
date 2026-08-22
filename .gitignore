@@ -1,0 +1,9 @@
+config.json
+profile.yaml
+runtime/
+vendor/*.exe
+vendor/*.zip
+vendor/*.txt
+node_modules/
+*.log
+.DS_Store
