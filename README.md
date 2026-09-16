@@ -170,6 +170,8 @@ npm run check
 .\scripts\verify-public.ps1
 ```
 
+PR 会在 GitHub Actions 的 `windows-latest` 上用 Node.js 20、22、24 跑完整检查，并额外执行一次真实 `.cmd` wrapper spawn 回归测试。
+
 欢迎提交 Issue 和 PR。贡献规则见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## License
