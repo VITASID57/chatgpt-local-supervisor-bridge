@@ -6,6 +6,26 @@
 
 > Windows-first，Node.js 零第三方依赖。非 OpenAI 官方项目；隧道客户端使用 OpenAI 官方开源项目。
 
+## 官方支持依据
+
+本项目本身是第三方开源桥，但它使用的传输路径是 OpenAI 官方提供的 **Secure MCP Tunnel**，不是抓取 ChatGPT 登录态、转发网页请求或把本地 Web 服务做成“反代网页”。
+
+OpenAI 官方文档当前明确说明：
+
+- Secure MCP Tunnel 用于把**私有 MCP server**连接到受支持的 OpenAI 产品，而无需开放公网入站端口；
+- `tunnel-client` 从本地或私网环境向 OpenAI 建立**出站 HTTPS**连接，再把 MCP JSON-RPC 请求转发给本地 stdio / HTTP MCP server；
+- ChatGPT、Codex、Responses API 等受支持产品都可以通过 Tunnel 调用私有 MCP server；
+- ChatGPT 开发者模式中可以在创建应用时把 **Connection** 选择为 **Tunnel**；
+- Tunnel 适合私有连接和 developer-mode testing，但**不等于公开插件发布通道**。公开插件仍需要稳定的公网 HTTPS MCP endpoint。
+
+官方资料：
+
+- [OpenAI Secure MCP Tunnel 文档](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels)
+- [OpenAI tunnel-client 源码与发行版](https://github.com/openai/tunnel-client)
+- [OpenAI Terms and policies](https://openai.com/policies/)
+
+这部分用于说明“连接方式本身是官方支持路径”，不代表 OpenAI 对本仓库的第三方代码、具体部署方式或任何具体用途作出背书。实际使用仍应以当前 OpenAI 文档、账号权限和适用条款为准。
+
 ## 它能做什么
 
 - 动态列出配置项目及其所有 Git worktree。
@@ -116,6 +136,12 @@ npm run check
 ```
 
 ChatGPT 网页端的完整连接步骤见 [Windows 中文安装教程](docs/WINDOWS.zh-CN.md)。
+
+## Windows 上的 `spawn EINVAL`
+
+如果桥能读文件，但一运行 `npm` / `pnpm` / `yarn` 脚本就出现 `spawn EINVAL`，优先看 [Windows 中文安装教程的故障排查](docs/WINDOWS.zh-CN.md#9-windows-上的-spawn-einval)。
+
+这不是本项目独有的问题。Node.js 在 2024 年针对 Windows 批处理文件执行修复了 CVE-2024-27980；较新的 Node 版本会拒绝用 `child_process.spawn()` 在 `shell: false` 下直接启动 `.cmd` / `.bat`，并返回 `EINVAL`。本项目在 Windows 上会显式通过 `cmd.exe /d /s /c` 启动这类包装器，而不是打开任意 Shell 能力。
 
 ## 推荐的首次提示词
 
