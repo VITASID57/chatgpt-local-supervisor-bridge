@@ -10,7 +10,7 @@
   },
   "scripts": {
     "check:syntax": "node --check server.mjs && node --check lib/common.mjs && node --check lib/policy.mjs && node --check lib/file-tools.mjs && node --check lib/git-tools.mjs && node --check lib/process-tools.mjs",
-    "test": "node --test test/policy.test.mjs",
+    "test": "node --test",
     "smoke": "node scripts/smoke-test.mjs",
     "check": "npm run check:syntax && npm test && npm run smoke"
   }

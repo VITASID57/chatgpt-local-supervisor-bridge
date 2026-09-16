@@ -1,0 +1,44 @@
+name: Windows CI
+
+on:
+  push:
+    branches:
+      - docs/windows-spawn-einval-20260916
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22, 24]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Show toolchain
+        shell: pwsh
+        run: |
+          node --version
+          npm --version
+          Get-Command node | Format-List Source
+          Get-Command npm | Format-List Source
+          Get-Command corepack -ErrorAction SilentlyContinue | Format-List Source
+
+      - name: Repository checks
+        run: npm run check
+
+      - name: Real Windows cmd wrapper spawn regression
+        shell: pwsh
+        run: |
+          Set-Content -LiteralPath .\spawn-regression.cmd -Value '@echo spawn-wrapper-ok' -Encoding ASCII
+          node --input-type=module -e "import { run } from './lib/common.mjs'; const r = await run('.\\spawn-regression.cmd', []); console.log(r); if (r.code !== 0 || !r.stdout.includes('spawn-wrapper-ok')) process.exit(1);"
+          Remove-Item -LiteralPath .\spawn-regression.cmd -Force
